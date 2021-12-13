@@ -137,8 +137,7 @@ const Dashboard = () => {
                     <Calendar />
                     <Timetracker/>
                 </Box>
-            </Box>
-            
+            </Box>         
         </>
         
     )

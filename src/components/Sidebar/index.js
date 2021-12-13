@@ -25,17 +25,17 @@ const Sidebar = () => {
 
             {/* Nav things */}
             <div>
-                {navItems.map(e =><>
-                    <Box sx={{mb: 3}}>
+                {navItems.map(e =>
+                    <Box key={e.name} sx={{mb: 3}}>
                         <Link className="nav-links" to={e.link}>
-                            <Box sx={{display: 'flex'}} key={e.name}>
+                            <Box sx={{display: 'flex'}}>
                             {e.icon}
                             <Typography style={{marginLeft: '15px'}}> {e.name}</Typography>
                             </Box>
                         </Link>
                         
                     </Box>
-                </>)}
+                )}
             </div>
 
             {/* Login Signup */}
