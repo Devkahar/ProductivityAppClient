@@ -5,8 +5,8 @@ import {
   MuiPickersUtilsProvider,
 } from '@material-ui/pickers';
 
-function App() {
-  const [selectedDate, handleDateChange] = useState(new Date());
+function App({selectedDate, handleDateChange}) {
+  // const [selectedDate, handleDateChange] = useState(new Date());
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils} >
      <DatePicker

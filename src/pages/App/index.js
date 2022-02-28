@@ -1,10 +1,12 @@
 import React from 'react'
+import Auth from '../../components/Auth'
+import Layout from '../Layout'
 
 const App = () => {
     return (
-        <div>
-            
-        </div>
+        <Layout>
+            <Auth/>
+        </Layout>
     )
 }
 

@@ -47,3 +47,25 @@ body{
 .nav-links:hover,.nav-links:active,.extra-links:hover{
   color: #9b90b9;
 }
+
+/* Custom Button Class */
+
+.btn{
+  margin: 12px 0 !important;
+  background-color:#fff !important;
+  padding: 10px !important;
+  border-radius: 100px !important;
+  border: 1px solid #eee !important;
+  font-size: 1.1rem !important;
+}
+
+.btn-pink{
+  background-color:#F92E8B !important;
+  border: 1px solid #F92E8B !important;
+  color: #fff !important;
+}
+
+/* Target MUI Class */
+.MuiButton-root{
+  text-transform: none !important;
+}
