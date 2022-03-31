@@ -137,7 +137,7 @@ const Auth = (props) => {
     // Main Data Stream;
     const data = { 'signup': forSignUp, 'signin': forSignIn };
 
-    console.log("USer ",user);
+    // console.log("USer ",user);
     return <div>
         {user.isUser?
             <Userprofile/>
