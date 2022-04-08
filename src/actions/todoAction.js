@@ -4,10 +4,9 @@ import {
     TODO_SET,
     TODO_ERROR
 } from '../constants/index'
-const token = JSON.parse(localStorage.getItem('userData'))['token'];
+const token = localStorage.getItem('userData')? JSON.parse(localStorage.getItem('userData'))['token']:null;
 const saveToDoData =  (listData,date)=> async (dispatch) =>{
     try {
-        
         const res = await axios.post('/api/todo/create/',{listData,date},{
             headers:{
                 authorization: `Bearer ${token}`

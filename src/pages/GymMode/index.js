@@ -3,11 +3,12 @@ import Webcam from 'react-webcam'
 import model from '../../model.json'
 import * as poseDetection from '@tensorflow-models/pose-detection'
 import * as tf from '@tensorflow/tfjs';
-import { Box, Typography,Button, Grid } from '@material-ui/core';
+import { Select,MenuItem,Typography,Button,TextField,Box, InputLabel, FormControl} from '@material-ui/core';
+// import {    } from '@mui/material';
 import { connections as keyPointConnections, POINTS } from '../../helper'
 import Layout from '../Layout';
 import SelectPose from '../../components/SelectPose';
-
+import correctAudio from '../../assets/correct.mp3';
 const drawPoint = (ctx, x, y, r, color = 'rgb(255,255,255)') => {
     ctx.beginPath();
     ctx.arc(x, y, r, 0, 2 * Math.PI);
@@ -46,6 +47,10 @@ const GymMode = () => {
     const [currentTime,setCurrentTime] = useState(0);
     const [totalTime,setTotalTime] = useState(0);
     const [accuracy,setAccuracy] = useState(0);
+    const [currentPoseSet,setCurrentPoseSet] = useState(0);
+    const [poseTimeDuration,setposeTimeDuration] = useState(60);
+    const [poseSets,setPoseSets] = useState(3);
+    const audio1 = new Audio(correctAudio);
     useEffect(async () => {
         setDetector(await poseDetection.createDetector(poseDetection.SupportedModels.MoveNet, { modelType: poseDetection.movenet.modelType.SINGLEPOSE_THUNDER }));
         setPoseClassifier(await tf.loadLayersModel('https://models.s3.jp-tok.cloud-object-storage.appdomain.cloud/model.json'));
@@ -59,6 +64,13 @@ const GymMode = () => {
         let time = (currentTime-startTime)/1000;
         setTotalTime(time);
     },[currentTime]);
+    useEffect(()=>{
+        if(totalTime===poseTimeDuration){
+            setCurrentPoseSet(currentPoseSet+1);
+            setCurrentTime(0);
+            startValueIsSet=false;
+        }
+    },[totalTime])
     useEffect(()=>{
         setCurrentTime(0);
         setTotalTime(0);
@@ -153,21 +165,21 @@ const GymMode = () => {
                 // Its Time To make Prediction.
                 const processedInput = landmarks_to_embedding(inputs)
                 const classification =await poseClassifier.predict(processedInput)
-                
                 classification.array().then(res =>{
                     console.log(currentPose.name,res[0][poseKey[currentPose.name]]);
-                    setAccuracy(res[0][poseKey[currentPose.name]]*100);
+                    setAccuracy(parseInt(res[0][poseKey[currentPose.name]]*100));
                     if(res[0][poseKey[currentPose.name]]>0.97){
                         skeletonColor = 'rgb(0,255,0)';
                         if(!startValueIsSet){
                             setStartTime(new Date(Date()).getTime());
                             startValueIsSet=true;
                         }
+                        audio1.play();
                         setCurrentTime(new Date(Date()).getTime());
                         fault=0;
                     }else{
                         fault++;
-                        if(fault>4){
+                        if(fault>10){
                             setCurrentTime(0);
                             startValueIsSet= false;
                             skeletonColor = 'rgb(255,255,255)';
@@ -196,21 +208,65 @@ const GymMode = () => {
         setCurrentTime(0);
         startValueIsSet=false;
     }
+    const poseTimeHandler = (e) => {
+        let time = e.target.value;
+        setposeTimeDuration(time);
+    }
+    const poseSetHandler =(e) => {
+        let sets = e.target.value;
+        setPoseSets(sets);
+    }
     return (
         <Layout>
             <Box className="c-black">
                 <Box sx={{display: 'flex', justifyContent: 'space-between',width: '60%'}}>
                     <Typography variant="h4">Pose Time: {totalTime}s</Typography>
-                    <Typography variant="h4">Set: 0</Typography>
+                    <Typography variant="h4">Set: {currentPoseSet}</Typography>
                     <Typography variant="h4">Accuracy: {accuracy}</Typography>
                 </Box>
-                {/* <Box sx={{display: 'flex', justifyContent: 'space-between',height: '50px',mt:2}}> */}
-                    <Button variant="contained" color="primary" onClick={startModelHandler} disabled={modelIsRunning} style={{marginRight:'20px'}}>Start Exercise</Button>
+                <Box sx={{display: 'flex', justifyContent: 'space-between',alignItems: 'center',height: '30px',width: '720px',mt:2}}>
+                    <Button variant="contained" color="primary" onClick={startModelHandler} disabled={modelIsRunning}>Start Exercise</Button>
                     <Button variant="contained" color="primary" onClick={stopModelHandler} disabled={!modelIsRunning}>Stop Exercise</Button>
-                {/* </Box> */}
+                    <Box sx={{width:'150px'}}>
+                        <FormControl fullWidth>
+                            <InputLabel id="demo-simple-select-label">Pose Time</InputLabel>
+                                <Select
+                                    labelId="demo-simple-select-label"
+                                    id="demo-simple-select"
+                                    value={poseTimeDuration}
+                                    label="Pose Time"
+                                    onChange={poseTimeHandler}
+                                    width="100%"
+                                >
+                                    <MenuItem value={15}>15 sec</MenuItem>
+                                    <MenuItem value={30}>30 sec</MenuItem>
+                                    <MenuItem value={45}>45 sec</MenuItem>
+                                    <MenuItem value={60}>60 sec</MenuItem>
+                                    <MenuItem value={120}>120 sec</MenuItem>
+                                </Select>
+                        </FormControl>
+                    </Box>
+                    <Box sx={{width:'150px'}}>
+                        <FormControl fullWidth>
+                            <InputLabel id="demo-simple-select-label">Pose Sets</InputLabel>
+                                <Select
+                                    labelId="demo-simple-select-label"
+                                    id="demo-simple-select"
+                                    value={poseSets}
+                                    label="Pose poseSet"
+                                    onChange={poseSetHandler}
+                                    width="100%"
+                                >
+                                    <MenuItem value={1}>1 Set</MenuItem>
+                                    <MenuItem value={3}>3 Set</MenuItem>
+                                    <MenuItem value={5}>5 Set</MenuItem>
+                                </Select>
+                        </FormControl>
+                    </Box>
+                </Box>
                 
             </Box>
-            <Box sx={{mt: 3}}>
+            <Box sx={{mt: 6}}>
                 <Box>
                     <Box sx={{outline: `15px solid #eee`, height: '480px',width: '640px',position: 'absolute',padding: 0,}}>
                         <Webcam

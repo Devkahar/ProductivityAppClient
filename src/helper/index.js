@@ -5,6 +5,27 @@ export const data = {
 }
 
 
+export const getDuration = (dur)=>{
+    let Duration = parseInt(dur)/60;
+    let str = "";
+    if(parseInt(Duration/(24*60))>0){
+        str = str.concat(`${parseInt(Duration/(24*60))} Days `);
+        // console.log(`${parseInt(Duration/(24*60))} Days `);
+        Duration = Duration%(24*60);
+    }
+    if(parseInt(Duration/60)>0){
+        str = str.concat(`${parseInt(Duration/(60))} Hour `);
+        // console.log(`${parseInt(Duration/(60))} Hour `);
+        Duration =Duration%60;
+    }
+    if(Duration>0){
+        // console.log(`${Duration} mins`);
+        str = str.concat(`${Duration} mins`);
+    }
+    return str.length>0?str:'Dev';
+}
+
+
 export const POINTS = {
     NOSE : 0,
     LEFT_EYE : 1,

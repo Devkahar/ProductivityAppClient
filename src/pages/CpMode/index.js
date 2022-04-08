@@ -6,7 +6,7 @@ import PageWrapper from '../Pagewrapper'
 import { useDispatch, useSelector } from 'react-redux'
 import { constestDetails } from '../../actions/contestAction'
 import TaskItem from '../../components/TaskItem';
-
+import {getDuration} from '../../helper/index.js'
 const CpMode = () => {
     const constest = useSelector(state => state.contestList);
     const [contestData, setContentData] = useState([]);
@@ -15,8 +15,9 @@ const CpMode = () => {
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(constestDetails());
+        console.log("contest Data , ",);
     }, [dispatch]);
-    useEffect(() => {
+    useEffect(() =>{
         if (constest) {
             if (constest.loading) {
                 setContestLoading(true);
@@ -24,6 +25,7 @@ const CpMode = () => {
             if (constest.data) {
                 setContentData(constest.data);
                 setContestLoading(false);
+                console.log("contest Data , ",constest.data);
             }
             if (constest.error) {
                 setContestError(constest.error);
@@ -32,13 +34,13 @@ const CpMode = () => {
         }
     }, [constest]);
     console.log("Contest", contestData);
-    setInterval(()=>{
-        console.log("Dev");
-        console.log("Hii");
-    }, (60*60*100));
+    // setInterval(()=>{
+    //     console.log("Dev");
+    //     console.log("Hii");
+    // }, (60*60*100));
     return (
         <Layout>
-            <PageWrapper pageTitle="Track UpComing Contest">
+            <PageWrapper pageTitle="Track Upcoming Contest">
                 <Box>
                     <Box sx={{ mb: 3, p: 1 }}>
                         <Typography className="c-black" variant="h4">Apply Filter</Typography>
@@ -46,7 +48,7 @@ const CpMode = () => {
                             {contestLoading ? <CircularProgress color="secondary" />
                                 : contestError ? <Typography variant="p" color="danger">{contestError}</Typography>
                                     : contestData?.map(e => (
-                                        <TaskItem key={e.name} name={e.name} bg="#d8cbf7" url={e.url} />
+                                        <TaskItem key={e.name} name={e.name} bg="#d8cbf7" url={e.url} description={`Contest Duration ${getDuration(e.duration)} Date Timer -${new Date(e.start_time)}` } />
                                     ))
                             }
                         </Box>
