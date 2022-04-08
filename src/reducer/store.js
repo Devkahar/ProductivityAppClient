@@ -3,9 +3,11 @@ import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import {contestReducer} from './cpmodeReducer'
 import { authReducer } from './authReducer';
+import { todoReducer } from './todoReducer';
 const reducer = combineReducers({
     contestList:contestReducer,
     userData: authReducer,
+    todoData: todoReducer,
 })
 const userData =localStorage.getItem('userData');
 const initialState = {

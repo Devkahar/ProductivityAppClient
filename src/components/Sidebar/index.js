@@ -10,15 +10,17 @@ import CodeIcon from '@mui/icons-material/Code';
 import { Link } from 'react-router-dom';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
+import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 const Sidebar = () => {
     const navItems = [
         {name: 'DashBoard', icon : <DashboardIcon/>,link: '/dashboard'}, 
         {name: 'Reminder',icon: <DateRangeIcon/>, link: '/reminder'},
         {name: 'Report',icon: <SummarizeIcon/>,link: '/report'},
-        {name: 'Settings',icon: <SettingsIcon/>, link: '/settings'},
+        {name: 'GymMode',icon: <FitnessCenterIcon/>, link: '/gymMode'},
         {name: 'Support',icon: <SupportAgentIcon/>, link: '/support'},
         {name: 'Programmer Mode', icon: <CodeIcon/>, link: '/programmerMode'},
         {name: 'Todo Maker', icon: <CodeIcon/>, link: '/todo'},
+        {name: 'Settings',icon: <SettingsIcon/>, link: '/settings'},
     ];
     return (
         <Box sx={{display: 'flex',flexDirection: 'column',justifyContent: 'space-between',height: '100vh',padding: '30px', width: '300px', borderRight: '1px solid #eee', overflow: 'scroll'}}>

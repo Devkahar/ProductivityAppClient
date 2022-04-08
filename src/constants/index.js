@@ -8,3 +8,7 @@ export const USER_AUTH_LOADING = 'USER_AUTH_LOADING';
 export const USER_AUTH_SET = 'USER_AUTH_SET';
 export const USER_AUTH_ERROR = 'USER_AUTH_ERROR';
 export const USER_RESET = 'USER_RESET';
+
+export const TODO_LOADING = 'TODO_LOADING';
+export const TODO_SET = 'TODO_SET';
+export const TODO_ERROR = 'TODO_ERROR';
