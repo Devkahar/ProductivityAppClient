@@ -28,7 +28,7 @@ const ProgrammerMode = () => {
                 <Box>
                     <Grid container className="c-black">
                         <Grid item md={6}>
-                            <Link className="extra-links" to={links.projectMode}><Typography variant="h3">Manage You're Projects</Typography></Link>
+                            <Link className="extra-links" to={links.projectMode}><Typography variant="h3">Manage Your Projects</Typography></Link>
                             <Box sx={{mt:3,mb:3,p: 1}}>
                                 <Typography className="c-black" variant="h4">On Going Projects</Typography>
                                 <Box sx={{mt:3}}>

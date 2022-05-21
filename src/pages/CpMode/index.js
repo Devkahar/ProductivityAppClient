@@ -6,7 +6,8 @@ import PageWrapper from '../Pagewrapper'
 import { useDispatch, useSelector } from 'react-redux'
 import { constestDetails } from '../../actions/contestAction'
 import TaskItem from '../../components/TaskItem';
-import {getDuration} from '../../helper/index.js'
+import {getDuration,getDate} from '../../helper/index.js';
+
 const CpMode = () => {
     const constest = useSelector(state => state.contestList);
     const [contestData, setContentData] = useState([]);
@@ -33,11 +34,10 @@ const CpMode = () => {
             }
         }
     }, [constest]);
-    console.log("Contest", contestData);
-    // setInterval(()=>{
-    //     console.log("Dev");
-    //     console.log("Hii");
-    // }, (60*60*100));
+    console.table(contestData);
+    const addToDoHandler = (date)=>{
+        console.log(date);
+    }
     return (
         <Layout>
             <PageWrapper pageTitle="Track Upcoming Contest">
@@ -48,7 +48,11 @@ const CpMode = () => {
                             {contestLoading ? <CircularProgress color="secondary" />
                                 : contestError ? <Typography variant="p" color="danger">{contestError}</Typography>
                                     : contestData?.map(e => (
-                                        <TaskItem key={e.name} name={e.name} bg="#d8cbf7" url={e.url} description={`Contest Duration ${getDuration(e.duration)} Date Timer -${new Date(e.start_time)}` } />
+                                        <TaskItem key={e.name} name={e.name} bg="#d8cbf7" url={e.url} 
+                                        description={`Contest Duration ${getDuration(e.duration)} | Start Date - ${getDate(new Date(e.start_time))}` } 
+                                        parameter={getDate(new Date(e.start_time))} 
+                                        onClickHandler ={addToDoHandler}
+                                        />
                                     ))
                             }
                         </Box>

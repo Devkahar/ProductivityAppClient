@@ -160,7 +160,6 @@ const GymMode = () => {
                     }
                     return [keypoint.x, keypoint.y];
                 })
-
                 // Done with Drawing And Storing Inputs.
                 // Its Time To make Prediction.
                 const processedInput = landmarks_to_embedding(inputs)

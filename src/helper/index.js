@@ -25,7 +25,11 @@ export const getDuration = (dur)=>{
     return str.length>0?str:'Dev';
 }
 
-
+export const getDate = (selectedDate) =>{
+    let date = selectedDate.toString().split(' ');
+    date = date[2]+'-'+date[1]+'-'+date[3];
+    return date;
+}
 export const POINTS = {
     NOSE : 0,
     LEFT_EYE : 1,

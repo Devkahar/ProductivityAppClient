@@ -7,7 +7,20 @@ import CpMode from './pages/CpMode';
 import Logout from './components/Logout';
 import Todo from './pages/Todo';
 import GymMode from './pages/GymMode';
+import { useEffect } from 'react';
+import axios from 'axios';
 function App() {
+  useEffect( async()=>{
+    try {
+        const res = await axios.get('/api/getModel/housePrice');
+        if(res){
+          const f = res.data;
+          console.log(typeof f);
+        }
+    } catch (error) {
+        console.log(error);
+    }
+  },[]);
   return (
     <div className="App">
       <Router>

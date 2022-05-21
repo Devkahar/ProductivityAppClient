@@ -6,6 +6,7 @@ import {  Button, TextField } from '@material-ui/core';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import { useDispatch, useSelector } from 'react-redux';
 import {getToDoData,saveToDoData} from '../../actions/todoAction'
+import {getDate} from '../../helper/index';
 const Todo = () => {
     const dispatch = useDispatch();
     const todoObj = useSelector(state => state.todoData);
@@ -38,6 +39,12 @@ const Todo = () => {
             name: '',
             Link:'',
             priority: 0,
+        },
+        'contest':{
+            name: '',
+            Link:'',
+            priority: 0,
+            startTime: '',
         }
     }
     const [todoData,setTodoData] = useState({
@@ -65,8 +72,7 @@ const Todo = () => {
     })
     // console.log(selectedDate);
     useEffect(() => {
-        let date = selectedDate.toString().split(' ');
-        date = date[2]+'-'+date[1]+'-'+date[3];
+        let date = getDate(selectedDate);
         dispatch(getToDoData(date));
         const copyTodoData = {...todoData};
         parameters.map(key =>{
@@ -126,7 +132,7 @@ const Todo = () => {
             <Grid container>
                 <Grid item xs={12} sm={6} md={8} >
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 5 }}>
-                        <Typography className="c-black" variant="h4">Start planing You're Goals</Typography>
+                        <Typography className="c-black" variant="h4">Start planing your Goals</Typography>
                     </Box>
                     <Box className="c-black" sx={{width: '100%',}}>
                         <Typography className="c-black" variant="p">{todoObj?.error}</Typography>

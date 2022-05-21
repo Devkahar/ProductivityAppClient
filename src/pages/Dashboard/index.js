@@ -17,7 +17,7 @@ import {
     Title,
     Tooltip,
     Legend,
-} from 'chart.js'
+} from 'chart.js';
 import Layout from '../Layout';
 import "./style.css"
 import TaskItem from '../../components/TaskItem';
@@ -51,6 +51,8 @@ const Dashboard = () => {
             tension: 0.1
         }]
     };
+    const parameters = ['general','meetings','programmer','project','student'];
+    
     return (
         <Layout>
             {/* Page Header Part */}
