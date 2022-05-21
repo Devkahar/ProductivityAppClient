@@ -1,5 +1,5 @@
 import Calendar from '../../components/Calendar';
-import { Box, Grid, Typography } from '@mui/material'
+import { Box, Checkbox, Grid, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import Layout from '../Layout'
 import {  Button, TextField } from '@material-ui/core';
@@ -7,44 +7,56 @@ import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import { useDispatch, useSelector } from 'react-redux';
 import {getToDoData,saveToDoData} from '../../actions/todoAction'
 import {getDate} from '../../helper/index';
+import Feedback from '../../components/Feedback';
 const Todo = () => {
     const dispatch = useDispatch();
     const todoObj = useSelector(state => state.todoData);
     console.log(todoObj);
     const [selectedDate, handleDateChange] = useState(new Date());
-    const parameters = ['general','meetings','programmer','project','student']
+    const [open,setOpen] = useState(false);
+    const [message, setMessage] = useState("");
+    const [severity,setServirity] = useState("");
+    const parameters = ['general','meetings','programmer','project','student','contest']
     const listData = {
         'general': {
             name: '',
             Link: '',
             priority: 0,
+            status : false,
         },
         'meetings':{
             name: '',
             Link: '',
             time: '',
             priority: 0,
+            status : false,
         },
         'programmer':{
             name: '',
             Link: '',
             priority: 0,
+            status : false,
         },
         'project':{
             name: '',
             Link: '',
             priority: 0,
+            status : false,
         },
         'student':{
             name: '',
             Link:'',
             priority: 0,
+            status : false,
         },
         'contest':{
             name: '',
             Link:'',
             priority: 0,
             startTime: '',
+            websiteName: '',
+            duration: '',
+            status : true,
         }
     }
     const [todoData,setTodoData] = useState({
@@ -68,6 +80,9 @@ const Todo = () => {
             tasks:[],
             linkRequired: false,
         },
+        'contest':{
+            tasks:[],
+        }
         
     })
     // console.log(selectedDate);
@@ -84,6 +99,7 @@ const Todo = () => {
         const loading = todoObj.loading;
         if(!loading){
             if(!todoObj.error){
+                console.log(todoObj.data);
                 const data = todoObj?.data;
                 const copyTodoData = {...todoData};
                 data?.map(el =>{
@@ -95,7 +111,7 @@ const Todo = () => {
 
     },[todoObj]);
     const setMyValues = (value,key,index,subkey)=>{
-        if(value == 'NaN') value = 0;
+        if(subkey==='priority'&&value == 'NaN') value = 0;
         // console.log(key," ",index, " ",subkey," ",typeof value);
         const copyTodoData = {...todoData};
         copyTodoData[key].tasks[index][subkey] = value;
@@ -113,7 +129,7 @@ const Todo = () => {
         copyTodoData[key].tasks.splice(idx,1);
         setTodoData(copyTodoData);
     }
-    const onSaveHandler = () => {
+    const onSaveHandler = async () => {
         const newData = [];
         let date = selectedDate.toString().split(' ');
         date = date[2]+'-'+date[1]+'-'+date[3];
@@ -122,8 +138,18 @@ const Todo = () => {
                 newData.push({todoType: key,tasks: [...todoData[key].tasks]});
             
         })
-        dispatch(saveToDoData(newData,date));
         // console.log(newData);
+        const status = await saveToDoData(newData,date);
+        if(status == "success"){
+            setOpen(true)
+            setMessage("Todo Saved Successfully");
+            setServirity("success");
+        }else{
+            setOpen(true)
+            setMessage("Something Went Wrong");
+            setServirity("error");
+        }
+        
     }
     // console.log(new Date().toUTCString());
     return (
@@ -159,8 +185,24 @@ const Todo = () => {
                                                 <TextField fullWidth label="Task Name" value={e.name} onChange={(e) => setMyValues(e.target.value,key,idx,'name')}/>
                                                 <br/>
                                                 <TextField fullWidth label="Task Link" value={e.link} onChange={(e) => setMyValues(e.target.value,key,idx,'link')}/>
+                                                {key==='contest'&&
+                                                <>
+                                                    <br/>
+                                                    <TextField fullWidth label="Hosted By " value={e.websiteName} onChange={(e) => setMyValues(e.target.value,key,idx,'websiteName')}/>
+                                                    <br/>
+                                                    <TextField fullWidth label="Contest Start At " value={e.startTime +" IST"} onChange={(e) => setMyValues(e.target.value,key,idx,'startTime')}/>
+                                                    <br/>
+                                                    <TextField fullWidth label="Contest Duration " value={e.duration} onChange={(e) => setMyValues(e.target.value,key,idx,'duration')}/>
+                                                </>}
                                                 <br/>
                                                 <TextField type="number" fullWidth label="Set Priority" value={e.priority} onChange={(e) => setMyValues(parseInt(e.target.value),key,idx,'priority')}/>
+                                                <br/>
+                                                <Typography variant="p">Status</Typography>
+                                                <Checkbox
+                                                    checked={e.status}
+                                                    onChange={(e) => setMyValues(e.target.checked,key,idx,'status')}
+                                                    inputProps={{ 'aria-label': 'controlled' }}
+                                                />
                                             </Box>
                                         ))}
                                         <Button variant="contained" color="primary" onClick={()=> addMoreTasks(key)}>Add Item</Button>
@@ -177,8 +219,7 @@ const Todo = () => {
                     </Box>
                 </Grid>
             </Grid>
-            
-            
+            <Feedback setOpen={setOpen} open={open} severity={severity} message={message}/>
         </Layout>
     )
 }

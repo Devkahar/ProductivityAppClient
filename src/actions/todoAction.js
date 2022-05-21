@@ -5,7 +5,7 @@ import {
     TODO_ERROR
 } from '../constants/index'
 const token = localStorage.getItem('userData')? JSON.parse(localStorage.getItem('userData'))['token']:null;
-const saveToDoData =  (listData,date)=> async (dispatch) =>{
+const saveToDoData =  async (listData,date)=>{
     try {
         const res = await axios.post('/api/todo/create/',{listData,date},{
             headers:{
@@ -14,8 +14,10 @@ const saveToDoData =  (listData,date)=> async (dispatch) =>{
         });
         // console.log(res);
         console.log("Hey we Found RES ",res);
+        return "success";
     } catch (error) {
         console.log(error);
+        return "error";
     }
 }
 const getToDoData =  (date)=> async (dispatch) =>{
@@ -42,7 +44,27 @@ const getToDoData =  (date)=> async (dispatch) =>{
     }
 }
 
+const saveContestData = async (date,contestData)=> {
+    try {
+        const res = await axios.post('/api/todo/create/contest',{contestData,date},{
+            headers:{
+                authorization: `Bearer ${token}`
+            }
+        });
+        if(res){
+            console.log(res.data);
+            return "success"
+        }
+    } catch (error) {
+        console.log(error);
+        return "error"
+    }
+
+    
+}
+
 export {
     getToDoData,
     saveToDoData,
+    saveContestData,
 }

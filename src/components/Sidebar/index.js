@@ -13,15 +13,18 @@ import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 import Logo from '../../assets/logo.png';
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
+// import MyTodos from '../../pages/MyTodos';
 const Sidebar = () => {
     const navItems = [
         {name: 'DashBoard', icon : <DashboardIcon/>,link: '/dashboard'}, 
+        // {name: 'My Todos', icon: <MyTodos/>, link: '/mytodos'},
         {name: 'Reminder',icon: <DateRangeIcon/>, link: '/reminder'},
         // {name: 'Report',icon: <SummarizeIcon/>,link: '/report'},
         {name: 'GymMode',icon: <FitnessCenterIcon/>, link: '/gymMode'},
         // {name: 'Support',icon: <SupportAgentIcon/>, link: '/support'},
         {name: 'Programmer Mode', icon: <CodeIcon/>, link: '/programmerMode'},
         {name: 'Todo Maker', icon: <ListIcon/>, link: '/todo'},
+        
         // {name: 'Settings',icon: <SettingsIcon/>, link: '/settings'},
     ];
     return (

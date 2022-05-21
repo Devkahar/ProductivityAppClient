@@ -4,7 +4,6 @@ export const data = {
     }
 }
 
-
 export const getDuration = (dur)=>{
     let Duration = parseInt(dur)/60;
     let str = "";
@@ -22,6 +21,7 @@ export const getDuration = (dur)=>{
         // console.log(`${Duration} mins`);
         str = str.concat(`${Duration} mins`);
     }
+    str = str.trimRight();
     return str.length>0?str:'Dev';
 }
 

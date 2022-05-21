@@ -9,6 +9,7 @@ import Todo from './pages/Todo';
 import GymMode from './pages/GymMode';
 import { useEffect } from 'react';
 import axios from 'axios';
+// import MyTodos from './pages/MyTodos';
 function App() {
   useEffect( async()=>{
     try {
@@ -34,7 +35,7 @@ function App() {
           <Route exect path="/logout" element={<Logout/>} />
           <Route exect path="/todo" element={<Todo/>} />
           <Route exect path="/gymMode" element={<GymMode/>} />
-
+          {/* <Route exect path="/mytodos" element={<MyTodos/>} /> */}
         </Routes>
       </Router>
     </div>
